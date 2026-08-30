@@ -74,64 +74,12 @@ let level = 0;
 let protectScrolls = 0;
 let shinyCharms = 0;
 let isShiny = false;
-const usedCodes = new Set(); // 사용된 코드 저장 목록
+const usedCodes = new Set();
 
 const PROTECT_PRICE = 500;
 const CHARM_PRICE = 20000;
 
-// DOM 요소
-const elGold = document.getElementById('gold');
-const elProtectCount = document.getElementById('protect-count');
-const elCharmCount = document.getElementById('charm-count');
-const elClickAmount = document.getElementById('click-amount');
-const elSwordName = document.getElementById('sword-name');
-const elCost = document.getElementById('cost');
-const elChance = document.getElementById('chance');
-const elSellPrice = document.getElementById('sell-price');
-const elLogBox = document.getElementById('log-box');
-const elUseProtect = document.getElementById('use-protect');
-const elUseCharm = document.getElementById('use-charm');
-const elSwordImg = document.getElementById('sword-img');
-const elCheatInput = document.getElementById('cheat-code-input');
-
-// 이벤트 연결
-document.getElementById('btn-earn').addEventListener('click', earnGold);
-document.getElementById('btn-buy').addEventListener('click', buyProtection);
-document.getElementById('btn-buy-charm').addEventListener('click', buyShinyCharm);
-document.getElementById('btn-upgrade').addEventListener('click', upgradePokemon);
-document.getElementById('btn-sell').addEventListener('click', sellPokemon);
-document.getElementById('btn-apply-code').addEventListener('click', applyCheatCode);
-
-// 개발자 코드 적용 함수
-function applyCheatCode() {
-  const code = elCheatInput.value.trim();
-
-  if (!code) {
-    addLog("코드를 입력해주세요.", "#ff9900");
-    return;
-  }
-
-  if (usedCodes.has(code)) {
-    addLog("이미 사용한 코드입니다.", "#ff4d4d");
-    return;
-  }
-
-  if (code === "dy-games1125") {
-    gold += 1000000;
-    usedCodes.add(code);
-    addLog("🎉 개발자 코드 [dy-games1125] 적용! <b>+1,000,000 G</b> 획득!", "#ffd700");
-    elCheatInput.value = "";
-  } else if (code === "dyloves") {
-    gold += 700000;
-    usedCodes.add(code);
-    addLog("🎉 개발자 코드 [dyloves] 적용! <b>+700,000 G</b> 획득!", "#ffd700");
-    elCheatInput.value = "";
-  } else {
-    addLog("유효하지 않은 개발자 코드입니다.", "#ff4d4d");
-  }
-
-  updateUI();
-}
+let elGold, elProtectCount, elCharmCount, elClickAmount, elSwordName, elCost, elChance, elSellPrice, elLogBox, elUseProtect, elUseCharm, elSwordImg, elCheatInput;
 
 function checkShinyProbability(useCharm) {
   const rate = useCharm ? 0.05 : 0.01;
@@ -139,6 +87,8 @@ function checkShinyProbability(useCharm) {
 }
 
 function updateUI() {
+  if (!elGold) return;
+  
   elGold.textContent = gold.toLocaleString();
   elProtectCount.textContent = protectScrolls;
   if (elCharmCount) elCharmCount.textContent = shinyCharms;
@@ -203,6 +153,36 @@ function buyShinyCharm() {
   gold -= CHARM_PRICE;
   shinyCharms++;
   addLog("✨ <b>빛나는부적</b>을 1개 구매했습니다!", "#9c27b0");
+  updateUI();
+}
+
+function applyCheatCode() {
+  const code = elCheatInput.value.trim();
+
+  if (!code) {
+    addLog("코드를 입력해주세요.", "#ff9900");
+    return;
+  }
+
+  if (usedCodes.has(code)) {
+    addLog("이미 사용한 코드입니다.", "#ff4d4d");
+    return;
+  }
+
+  if (code === "dy-games1125") {
+    gold += 1000000;
+    usedCodes.add(code);
+    addLog("🎉 개발자 코드 [dy-games1125] 적용! <b>+1,000,000 G</b> 획득!", "#ffd700");
+    elCheatInput.value = "";
+  } else if (code === "dyloves") {
+    gold += 700000;
+    usedCodes.add(code);
+    addLog("🎉 개발자 코드 [dyloves] 적용! <b>+700,000 G</b> 획득!", "#ffd700");
+    elCheatInput.value = "";
+  } else {
+    addLog("유효하지 않은 개발자 코드입니다.", "#ff4d4d");
+  }
+
   updateUI();
 }
 
@@ -290,5 +270,41 @@ function sellPokemon() {
   updateUI();
 }
 
-isShiny = checkShinyProbability(false);
-updateUI();
+// DOM 준비 시 이벤트 리스너 안전 연결
+document.addEventListener('DOMContentLoaded', () => {
+  elGold = document.getElementById('gold');
+  elProtectCount = document.getElementById('protect-count');
+  elCharmCount = document.getElementById('charm-count');
+  elClickAmount = document.getElementById('click-amount');
+  elSwordName = document.getElementById('sword-name');
+  elCost = document.getElementById('cost');
+  elChance = document.getElementById('chance');
+  elSellPrice = document.getElementById('sell-price');
+  elLogBox = document.getElementById('log-box');
+  elUseProtect = document.getElementById('use-protect');
+  elUseCharm = document.getElementById('use-charm');
+  elSwordImg = document.getElementById('sword-img');
+  elCheatInput = document.getElementById('cheat-code-input');
+
+  document.getElementById('btn-earn').addEventListener('click', earnGold);
+  document.getElementById('btn-buy').addEventListener('click', buyProtection);
+  document.getElementById('btn-buy-charm').addEventListener('click', buyShinyCharm);
+  document.getElementById('btn-upgrade').addEventListener('click', upgradePokemon);
+  document.getElementById('btn-sell').addEventListener('click', sellPokemon);
+  
+  const btnApply = document.getElementById('btn-apply-code');
+  if (btnApply) {
+    btnApply.addEventListener('click', applyCheatCode);
+  }
+
+  if (elCheatInput) {
+    elCheatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        applyCheatCode();
+      }
+    });
+  }
+
+  isShiny = checkShinyProbability(false);
+  updateUI();
+});
