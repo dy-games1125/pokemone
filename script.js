@@ -157,6 +157,7 @@ function buyShinyCharm() {
 }
 
 function applyCheatCode() {
+  if (!elCheatInput) return;
   const code = elCheatInput.value.trim();
 
   if (!code) {
@@ -270,7 +271,7 @@ function sellPokemon() {
   updateUI();
 }
 
-// DOM 준비 시 이벤트 리스너 안전 연결
+// DOM 준비 시 이벤트 안전 연결
 document.addEventListener('DOMContentLoaded', () => {
   elGold = document.getElementById('gold');
   elProtectCount = document.getElementById('protect-count');
@@ -286,20 +287,22 @@ document.addEventListener('DOMContentLoaded', () => {
   elSwordImg = document.getElementById('sword-img');
   elCheatInput = document.getElementById('cheat-code-input');
 
-  document.getElementById('btn-earn').addEventListener('click', earnGold);
-  document.getElementById('btn-buy').addEventListener('click', buyProtection);
-  document.getElementById('btn-buy-charm').addEventListener('click', buyShinyCharm);
-  document.getElementById('btn-upgrade').addEventListener('click', upgradePokemon);
-  document.getElementById('btn-sell').addEventListener('click', sellPokemon);
+  document.getElementById('btn-earn')?.addEventListener('click', earnGold);
+  document.getElementById('btn-buy')?.addEventListener('click', buyProtection);
+  document.getElementById('btn-buy-charm')?.addEventListener('click', buyShinyCharm);
+  document.getElementById('btn-upgrade')?.addEventListener('click', upgradePokemon);
+  document.getElementById('btn-sell')?.addEventListener('click', sellPokemon);
   
   const btnApply = document.getElementById('btn-apply-code');
   if (btnApply) {
     btnApply.addEventListener('click', applyCheatCode);
   }
 
+  // 개발자 코드 입력창에서 Enter 입력 시 '코드 적용' 전용 이벤트
   if (elCheatInput) {
-    elCheatInput.addEventListener('keypress', (e) => {
+    elCheatInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
+        e.preventDefault();
         applyCheatCode();
       }
     });
