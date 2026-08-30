@@ -74,6 +74,7 @@ let level = 0;
 let protectScrolls = 0;
 let shinyCharms = 0;
 let isShiny = false;
+const usedCodes = new Set(); // 사용된 코드 저장 목록
 
 const PROTECT_PRICE = 500;
 const CHARM_PRICE = 20000;
@@ -91,6 +92,7 @@ const elLogBox = document.getElementById('log-box');
 const elUseProtect = document.getElementById('use-protect');
 const elUseCharm = document.getElementById('use-charm');
 const elSwordImg = document.getElementById('sword-img');
+const elCheatInput = document.getElementById('cheat-code-input');
 
 // 이벤트 연결
 document.getElementById('btn-earn').addEventListener('click', earnGold);
@@ -98,6 +100,38 @@ document.getElementById('btn-buy').addEventListener('click', buyProtection);
 document.getElementById('btn-buy-charm').addEventListener('click', buyShinyCharm);
 document.getElementById('btn-upgrade').addEventListener('click', upgradePokemon);
 document.getElementById('btn-sell').addEventListener('click', sellPokemon);
+document.getElementById('btn-apply-code').addEventListener('click', applyCheatCode);
+
+// 개발자 코드 적용 함수
+function applyCheatCode() {
+  const code = elCheatInput.value.trim();
+
+  if (!code) {
+    addLog("코드를 입력해주세요.", "#ff9900");
+    return;
+  }
+
+  if (usedCodes.has(code)) {
+    addLog("이미 사용한 코드입니다.", "#ff4d4d");
+    return;
+  }
+
+  if (code === "dy-games1125") {
+    gold += 1000000;
+    usedCodes.add(code);
+    addLog("🎉 개발자 코드 [dy-games1125] 적용! <b>+1,000,000 G</b> 획득!", "#ffd700");
+    elCheatInput.value = "";
+  } else if (code === "dyloves") {
+    gold += 700000;
+    usedCodes.add(code);
+    addLog("🎉 개발자 코드 [dyloves] 적용! <b>+700,000 G</b> 획득!", "#ffd700");
+    elCheatInput.value = "";
+  } else {
+    addLog("유효하지 않은 개발자 코드입니다.", "#ff4d4d");
+  }
+
+  updateUI();
+}
 
 function checkShinyProbability(useCharm) {
   const rate = useCharm ? 0.05 : 0.01;
@@ -121,7 +155,7 @@ function updateUI() {
   }
 
   const cost = Math.floor(100 * Math.pow(1.35, level));
-  const chance = Math.max(3, 100 - (level * 3.2)); // 30단계 밸런스 조정
+  const chance = Math.max(3, 100 - (level * 3.2));
   const sellPrice = Math.floor(50 * Math.pow(1.6, level)) * multiplier;
 
   elCost.textContent = cost.toLocaleString();
@@ -200,7 +234,6 @@ function upgradePokemon() {
 
   gold -= cost;
 
-  // 진화 성공 시
   if (Math.random() * 100 < chance) {
     level++;
 
@@ -210,18 +243,16 @@ function upgradePokemon() {
       isCharmActive = true;
     }
 
-    // 진화 성공 후 이로치 재판정 (성공하면 이전 이로치 유무와 상관없이 이로치 확률 판정)
     const nextIsShiny = checkShinyProbability(isCharmActive);
 
     if (nextIsShiny) {
       isShiny = true;
       addLog(`✨ 대성공! ${isCharmActive ? '5%' : '1%'} 확률로 <b>[이로치 ${pokemonData[level].name}]</b> 변이 성공!`, "#ffd700");
     } else {
-      isShiny = false; // 이로치 실패 시 일반 포켓몬으로 변경
+      isShiny = false;
       addLog(`진화 성공! (+${level} ${pokemonData[level].name})`, "#4da6ff");
     }
   } else {
-    // 진화 실패 시
     if (useProtect && protectScrolls > 0) {
       protectScrolls--;
       addLog("진화 실패... 방지 약으로 형태를 유지했습니다. (부적 보존됨)", "#ff9900");
