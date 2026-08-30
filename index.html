@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>포켓몬 진화하기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="top-bar">
+      <span>골드: <strong id="gold">1,000</strong> G</span>
+      <span>방지권: <strong id="protect-count">0</strong>장</span>
+      <span>부적: <strong id="charm-count">0</strong>장</span>
+    </div>
+
+    <button id="btn-earn" class="action-btn">⚡ 훈련하기 (+<span id="click-amount">50</span>G)</button>
+
+    <div class="shop-box">
+      <div class="shop-title">🏪 아이템 상점</div>
+      <div class="shop-item">
+        <span>🛡️ 변화 방지 약 (500 G)</span>
+        <button id="btn-buy">구매</button>
+      </div>
+      <div class="shop-item">
+        <span>✨ 빛나는부적 (20,000 G)</span>
+        <button id="btn-buy-charm">구매</button>
+      </div>
+    </div>
+
+    <div class="main-display">
+      <div class="img-wrapper">
+        <img id="sword-img" src="" alt="포켓몬">
+      </div>
+      <h2 id="sword-name">[+0] 피츄</h2>
+      <div class="info-text">
+        진화 비용: <span id="cost">100</span> G | 성공 확률: <span id="chance">100</span>%<br>
+        전송 가격: <span id="sell-price">50</span> G
+      </div>
+    </div>
+
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="use-protect"> 진화 시 변화 방지 약 사용</label>
+      <label><input type="checkbox" id="use-charm"> 진화 시 빛나는부적 사용 (이로치 5%)</label>
+    </div>
+
+    <div class="log-box" id="log-box">
+      <p>게임을 시작합니다! 포켓몬을 진화시켜 멋지게 키워보세요.</p>
+    </div>
+
+    <div class="bottom-btn-group">
+      <button id="btn-upgrade" class="btn-main">진화하기</button>
+      <button id="btn-sell" class="btn-sub">전송하기</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
