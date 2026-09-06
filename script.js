@@ -39,7 +39,7 @@ const pokemonData = [
   { name: "파이어", normalColor: '#ff3d00', shinyColor: '#ff9100' },        // +36
   { name: "라이코", normalColor: '#ffeb3b', shinyColor: '#ff9800' },        // +37
   { name: "앤테이", normalColor: '#d84315', shinyColor: '#4e342e' },        // +38
-  { name: "스이쿤, normalColor: '#29b6f6', shinyColor: '#7a238a' },       // +39
+  { name: "스이쿤", normalColor: '#29b6f6', shinyColor: '#7a238a' },       // +39
   { name: "레지락", normalColor: '#8d6e63', shinyColor: '#ffb74d' },        // +40
   { name: "레지아이스", normalColor: '#80deea', shinyColor: '#00e5ff' },    // +41
   { name: "레지스틸", normalColor: '#9e9e9e', shinyColor: '#78909c' },      // +42
