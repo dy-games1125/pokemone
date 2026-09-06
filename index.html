@@ -16,15 +16,24 @@
 
     <button id="btn-earn" class="action-btn">⚡ 훈련하기 (+<span id="click-amount">50</span>G)</button>
 
+    <!-- 아이템 상점 (수량 선택 구매) -->
     <div class="shop-box">
       <div class="shop-title">🏪 아이템 상점</div>
+      
       <div class="shop-item">
-        <span>🛡️ 변화 방지 약 (500 G)</span>
-        <button id="btn-buy">구매</button>
+        <span>🛡️ 방지 약 (500 G)</span>
+        <div class="buy-group">
+          <input type="number" id="protect-qty" value="1" min="1" max="999">
+          <button id="btn-buy">구매</button>
+        </div>
       </div>
+
       <div class="shop-item">
         <span>✨ 빛나는부적 (20,000 G)</span>
-        <button id="btn-buy-charm">구매</button>
+        <div class="buy-group">
+          <input type="number" id="charm-qty" value="1" min="1" max="999">
+          <button id="btn-buy-charm">구매</button>
+        </div>
       </div>
     </div>
 
@@ -54,13 +63,15 @@
     </div>
 
     <div class="log-box" id="log-box">
-      <p>게임을 시작합니다! 포켓몬을 진화시켜 멋지게 키워보세요.</p>
+      <p>게임을 시작합니다! 데이터는 브라우저에 자동 저장됩니다.</p>
     </div>
 
     <div class="bottom-btn-group">
       <button id="btn-upgrade" class="btn-main">진화하기</button>
       <button id="btn-sell" class="btn-sub">전송하기</button>
     </div>
+    
+    <button id="btn-reset" class="reset-btn">🔄 데이터 초기화</button>
   </div>
 
   <script src="script.js"></script>
